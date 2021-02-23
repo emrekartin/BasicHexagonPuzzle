@@ -4,6 +4,7 @@ basic hexagon puzzle game
 
 It's a simple game I made to learn. It can be developed  a little more and presented. The game can be tried from test.apk. 
 Developed on Unity 2020.2.0f1.
+
 The images of the game are as follows:
 
 
