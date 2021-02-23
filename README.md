@@ -1,6 +1,6 @@
 # basichexagonpuzzle 
 
-It's a simple game I made to learn. It can be developed and presented a little more. The game can be tried from test.apk. 
+It's a simple game I made to learn. It can be developed  a little more and presented. The game can be tried from test.apk. 
 The images of the game are as follows:
 
 
