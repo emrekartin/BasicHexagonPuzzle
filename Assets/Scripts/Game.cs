@@ -4,56 +4,76 @@ using System;
 using Random = System.Random;
 public class Game : MonoBehaviour
 {
-    private Camera cam;
-    public GameObject beyaz;
-    public GameObject myPrefab;
-    public GameObject bladeTrailPrefab;
-    private GameObject holdName;
-    private GameObject holdObj;
-    private GameObject[,] myPrefabList;
-    private float aaa = 0.350f;
-    private float baa = 0.615f;
-    private GameObject[,] beyazList = new GameObject[16, 7];
-    private Random choosencolor = new Random();
-    static  int[] intarr = new int[2];
-    private int[] indexx = new int[20];
-    private int[] indexy = new int[20];
-    private string stringname;
-    private char[] chararr = new char[3];
-    private GameObject currentBladeTrail;
-    private SpriteRenderer mr;
-    private Vector3 mysecondVector;
-    private Vector3 myVector;
-    private Vector3 holdVector;
-    private Vector3 holdvec;
-    private Vector2 oldPosition;
-    private Vector2 newPosition;
+
     private int hexagonheight = 9;
     private int hexagonweight = 8;
+
+    private int triplehexagon_x1;
+    private int triplehexagon_y1;
+    private int triplehexagon_x2;
+    private int triplehexagon_y2;
+    private int triplehexagon_x3;
+    private int triplehexagon_y3;
+
+    private GameObject[,] nodelist = new GameObject[16, 7];
+    private GameObject[,] hexagonlist;
+
+    public GameObject hexagons;
+    public GameObject nodes;
+    public GameObject touchsensor;
+    private GameObject currenttouchsensor;
+
+    private Camera cam;
+
+    private GameObject holdName;
+    private GameObject holdObj;
+    private Random choosencolor = new Random();
+    static int[] nodeindex = new int[2];
+    
+
+
+    private int[] closesthexagonindex_i = new int[20];
+    private int[] closesthexagonindex_y = new int[20];
+
+    private string stringname;
+    private char[] chararr = new char[3];
+    
+    private SpriteRenderer spriteRenderer;
+
+
+    private Vector3 Circle_Vector;
+    private Vector3 Hex_Vector;
+    private Vector3 hold_Hex_Vector;
+    private Vector3 hold_Vector;
+    
+    
+    private Vector2 oldPosition;
+    private Vector2 newPosition;
+    
+    
     private int givecolor = 0;
     private int controlcolor;
     private int sendindex_i;
     private static int sendindex_j;
     private int counter;
-    private int index_x1;
-    private int index_y1;
-    private int index_x2;
-    private int index_y2;
-    private int index_x3;
-    private int index_y3;
-    private int k;
-    private int t = 0;
-    private int tu = 0;
-    private float a = 0.700f;
-    private float b = 0.600f;
-    public int Point = 0;
-    private string point = "";
+
+
+    private int listindex;
+    private int updatehexagon = 0;
+    private int checkhexagon = 0;
+    private float coefficient_height = 0.700f;
+    private float coefficient_weight = 0.600f;
+
+
+    private int currentPoint = 0;
+    private string text_point = "";
+
     void Awake()
     {
-        myPrefabList = new GameObject[9, 8];
+        hexagonlist = new GameObject[9, 8];
         holdObj = new GameObject();
         holdName = new GameObject();
-        holdVector = new Vector3();
+        hold_Hex_Vector = new Vector3();
         cam = Camera.main;
         PointScreen();
         CreateHexagonMap();
@@ -61,8 +81,8 @@ public class Game : MonoBehaviour
     }
     void checkHexagon()
     {
-        k = 0;
-        if(tu == 0)
+        listindex = 0;
+        if(checkhexagon == 0)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -72,22 +92,22 @@ public class Game : MonoBehaviour
                     sendindex_j = u;
                     nearestObject(sendindex_i, sendindex_j);
 
-                    if (myPrefabList[index_x1, index_y1].GetComponent<SpriteRenderer>().color == myPrefabList[index_x2, index_y2].GetComponent<SpriteRenderer>().color)
+                    if (hexagonlist[triplehexagon_x1, triplehexagon_y1].GetComponent<SpriteRenderer>().color == hexagonlist[triplehexagon_x2, triplehexagon_y2].GetComponent<SpriteRenderer>().color)
                     {
-                        if (myPrefabList[index_x1, index_y1].GetComponent<SpriteRenderer>().color == myPrefabList[index_x3, index_y3].GetComponent<SpriteRenderer>().color)
+                        if (hexagonlist[triplehexagon_x1, triplehexagon_y1].GetComponent<SpriteRenderer>().color == hexagonlist[triplehexagon_x3, triplehexagon_y3].GetComponent<SpriteRenderer>().color)
                         {
-                            tu++;
-                            indexx[k] = index_x1;
-                            indexy[k] = index_y1;
-                            k++;
+                            checkhexagon++;
+                            closesthexagonindex_i[listindex] = triplehexagon_x1;
+                            closesthexagonindex_y[listindex] = triplehexagon_y1;
+                            listindex++;
                             counter++;
-                            indexx[k] = index_x2;
-                            indexy[k] = index_y2;
-                            k++;
+                            closesthexagonindex_i[listindex] = triplehexagon_x2;
+                            closesthexagonindex_y[listindex] = triplehexagon_y2;
+                            listindex++;
                             counter++;
-                            indexx[k] = index_x3;
-                            indexy[k] = index_y3;
-                            k++;
+                            closesthexagonindex_i[listindex] = triplehexagon_x3;
+                            closesthexagonindex_y[listindex] = triplehexagon_y3;
+                            listindex++;
                             counter++;
                         }
                     }
@@ -101,28 +121,28 @@ public class Game : MonoBehaviour
                 {
 
 
-                    if (((indexx[i] * 10) + indexy[i]) == ((indexx[j] * 10) + indexy[j]))
+                    if (((closesthexagonindex_i[i] * 10) + closesthexagonindex_y[i]) == ((closesthexagonindex_i[j] * 10) + closesthexagonindex_y[j]))
                     {
                         if (i != j)
                         {
-                            indexx[j] = -1;
-                            indexy[j] = -1;
+                            closesthexagonindex_i[j] = -1;
+                            closesthexagonindex_y[j] = -1;
                         }
                     }
                 }
             }
         }
         if (counter > 2){ 
-            if(t == 0)
+            if(updatehexagon == 0)
             {
-                t++;
+                updatehexagon++;
                 StartCoroutine(WaitForLevelSwitch());
             }
         }
     }
     void Update()
     {
-        if (t == 0)
+        if (updatehexagon == 0)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -137,10 +157,10 @@ public class Game : MonoBehaviour
     }
     public void counterclockwiseRotationButton()
     {
-        intarr = sendarr();
-        sendindex_i = intarr[0];
+        nodeindex = sendarr();
+        sendindex_i = nodeindex[0];
 
-        sendindex_j = intarr[1];
+        sendindex_j = nodeindex[1];
         nearestObject(sendindex_i, sendindex_j);
         if (sendindex_i % 2 == 1)
         {
@@ -154,10 +174,10 @@ public class Game : MonoBehaviour
     public void clockwiseRotationButton()
     {
 
-        intarr = sendarr();
-        sendindex_i = intarr[0];
+        nodeindex = sendarr();
+        sendindex_i = nodeindex[0];
 
-        sendindex_j = intarr[1];
+        sendindex_j = nodeindex[1];
         nearestObject(sendindex_i, sendindex_j);
         if (sendindex_i % 2 == 1)
         {
@@ -173,43 +193,43 @@ public class Game : MonoBehaviour
 
         if ((index_i % 2) == 0)
         {
-            index_x1 = index_i / 2;
+            triplehexagon_x1 = index_i / 2;
         }
         else
         {
-            index_x1 = (index_i / 2) + 1;
+            triplehexagon_x1 = (index_i / 2) + 1;
         }
-        index_y1 = index_j;
-        index_x2 = index_x1;
-        index_y2 = index_j + 1;
+        triplehexagon_y1 = index_j;
+        triplehexagon_x2 = triplehexagon_x1;
+        triplehexagon_y2 = index_j + 1;
         if ((index_i % 2) == 0)
         {
-            index_x3 = (index_i / 2) + 1;
+            triplehexagon_x3 = (index_i / 2) + 1;
         }
         else
         {
-            index_x3 = (index_i / 2);
+            triplehexagon_x3 = (index_i / 2);
         }
         if ((index_i % 2) == 0)
         {
             if ((index_j % 2) == 0)
             {
-                index_y3 = index_j + 1;
+                triplehexagon_y3 = index_j + 1;
             }
             else
             {
-                index_y3 = index_j;
+                triplehexagon_y3 = index_j;
             }
         }
         else
         {
             if ((index_j % 2) == 0)
             {
-                index_y3 = index_j;
+                triplehexagon_y3 = index_j;
             }
             else
             {
-                index_y3 = index_j + 1;
+                triplehexagon_y3 = index_j + 1;
             }
         }
     }
@@ -219,17 +239,17 @@ public class Game : MonoBehaviour
         {
                 for (int j = 0; j < hexagonweight; j++)
                 {
-                    float xPos = i * a;
+                    float xPos = i * coefficient_height;
                     if (j % 2 != 1)
                     {
-                        xPos += a / 2f;
+                        xPos += coefficient_height / 2f;
                     }
                
                      
-                myPrefab.name = "hex" + i + j;
-                myVector = new Vector3(j * b - 2.1f , xPos - 2.5f, 0);
-                myPrefabList[i, j] = Instantiate(myPrefab, myVector, Quaternion.identity, GameObject.FindGameObjectWithTag("HexMap").transform);
-                mr = myPrefab.GetComponent<SpriteRenderer>();
+                hexagons.name = "hex" + i + j;
+                Hex_Vector = new Vector3(j * coefficient_weight - 2.1f , xPos - 2.5f, 0);
+                hexagonlist[i, j] = Instantiate(hexagons, Hex_Vector, Quaternion.identity, GameObject.FindGameObjectWithTag("HexMap").transform);
+                spriteRenderer = hexagons.GetComponent<SpriteRenderer>();
 
                 chooseColor();
                 }
@@ -252,31 +272,31 @@ public class Game : MonoBehaviour
         }
         if (givecolor == 0)
         {
-            mr.color = Color.red;
+            spriteRenderer.color = Color.red;
         }
         else if (givecolor == 1)
         {
-            mr.color = Color.green;
+            spriteRenderer.color = Color.green;
         }
         else if (givecolor == 2)
         {
-            mr.color = Color.blue;
+            spriteRenderer.color = Color.blue;
         }
         else if (givecolor == 3)
         {
-            mr.color = Color.cyan;
+            spriteRenderer.color = Color.cyan;
         }
         else if (givecolor == 4)
         {
-            mr.color = Color.yellow;
+            spriteRenderer.color = Color.yellow;
         }
         else if (givecolor == 5)
         {
-            mr.color = Color.gray;
+            spriteRenderer.color = Color.gray;
         }
         else if (givecolor == 6)
         {
-            mr.color = Color.black;
+            spriteRenderer.color = Color.black;
         }
     }
     void updateHexagon()
@@ -286,24 +306,24 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i< counter; i++)
         {
-            int indexxx = indexx[i];
-            int indexxy = indexy[i];
+            int indexxx = closesthexagonindex_i[i];
+            int indexxy = closesthexagonindex_y[i];
 
-            if (indexx[i] != -1)
+            if (closesthexagonindex_i[i] != -1)
             {
-                holdvec = myPrefabList[hexagonheight - 1, indexxy].transform.position;
-                holdName.name = myPrefabList[hexagonheight - 1, indexxy].name;
+                hold_Vector = hexagonlist[hexagonheight - 1, indexxy].transform.position;
+                holdName.name = hexagonlist[hexagonheight - 1, indexxy].name;
 
                 for (int j = hexagonheight - 1; j > indexxx; j--)
                 {
-                    myPrefabList[j, indexxy].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[j, indexxy].transform.position, myPrefabList[j-1, indexxy].transform.position, 1f);
-                    myPrefabList[j, indexxy].name = myPrefabList[j-1, indexxy].name;
+                    hexagonlist[j, indexxy].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[j, indexxy].transform.position, hexagonlist[j-1, indexxy].transform.position, 1f);
+                    hexagonlist[j, indexxy].name = hexagonlist[j-1, indexxy].name;
                     
                 }
 
-                myPrefabList[indexxx, indexxy].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[indexxx, indexxy].transform.position, holdvec, 1f);
-                myPrefabList[indexxx, indexxy].name = holdName.name;
-                myPrefabList[indexxx, indexxy].GetComponent<SpriteRenderer>().enabled = true;
+                hexagonlist[indexxx, indexxy].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[indexxx, indexxy].transform.position, hold_Vector, 1f);
+                hexagonlist[indexxx, indexxy].name = holdName.name;
+                hexagonlist[indexxx, indexxy].GetComponent<SpriteRenderer>().enabled = true;
             }
         }
 
@@ -311,10 +331,10 @@ public class Game : MonoBehaviour
         {
             for (int j = 0; j < hexagonweight ; j++)
             {
-                myPrefabList[i,j] = GameObject.Find("HexMap").transform.Find("hex" + (i) + (j) + "(Clone)").gameObject;
+                hexagonlist[i,j] = GameObject.Find("HexMap").transform.Find("hex" + (i) + (j) + "(Clone)").gameObject;
             }
         }
-        k = 0;
+        listindex = 0;
         counter = 0;
     }
     void sýrala()
@@ -327,29 +347,29 @@ public class Game : MonoBehaviour
             {
                 for (int t = 0; t < counter; t++)
                 {
-                    if (indexx[j] < indexx[t])
+                    if (closesthexagonindex_i[j] < closesthexagonindex_i[t])
                     {
-                        hold1 = indexx[j];
-                        hold2 = indexy[j];
+                        hold1 = closesthexagonindex_i[j];
+                        hold2 = closesthexagonindex_y[j];
 
-                        indexx[j] = indexx[t];
-                        indexy[j] = indexy[t];
+                        closesthexagonindex_i[j] = closesthexagonindex_i[t];
+                        closesthexagonindex_y[j] = closesthexagonindex_y[t];
 
-                        indexx[t] = hold1;
-                        indexy[t] = hold2;
+                        closesthexagonindex_i[t] = hold1;
+                        closesthexagonindex_y[t] = hold2;
                     }
-                    else if (indexx[j] == indexx[t])
+                    else if (closesthexagonindex_i[j] == closesthexagonindex_i[t])
                     {
-                        if (indexy[j] < indexy[t])
+                        if (closesthexagonindex_y[j] < closesthexagonindex_y[t])
                         {
-                            hold1 = indexx[j];
-                            hold2 = indexy[j];
+                            hold1 = closesthexagonindex_i[j];
+                            hold2 = closesthexagonindex_y[j];
 
-                            indexx[j] = indexx[t];
-                            indexy[j] = indexy[t];
+                            closesthexagonindex_i[j] = closesthexagonindex_i[t];
+                            closesthexagonindex_y[j] = closesthexagonindex_y[t];
 
-                            indexx[t] = hold1;
-                            indexy[t] = hold2;
+                            closesthexagonindex_i[t] = hold1;
+                            closesthexagonindex_y[t] = hold2;
                         }
                     }
                 }
@@ -359,53 +379,53 @@ public class Game : MonoBehaviour
     public void counterclockwiseRotation()
     {
 
-        holdName.name = myPrefabList[index_x1, index_y1].name;
+        holdName.name = hexagonlist[triplehexagon_x1, triplehexagon_y1].name;
 
-        holdVector = myPrefabList[index_x1, index_y1].transform.position;
-        myPrefabList[index_x1, index_y1].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x1, index_y1].transform.position, myPrefabList[index_x2, index_y2].transform.position, 1f);
-        myPrefabList[index_x1, index_y1].name = myPrefabList[index_x2, index_y2].name;
+        hold_Hex_Vector = hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position;
+        hexagonlist[triplehexagon_x1, triplehexagon_y1].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position, hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position, 1f);
+        hexagonlist[triplehexagon_x1, triplehexagon_y1].name = hexagonlist[triplehexagon_x2, triplehexagon_y2].name;
 
-        myPrefabList[index_x2, index_y2].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x2, index_y2].transform.position, myPrefabList[index_x3, index_y3].transform.position, 1f);
-        myPrefabList[index_x2, index_y2].name = myPrefabList[index_x3, index_y3].name;
+        hexagonlist[triplehexagon_x2, triplehexagon_y2].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position, hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position, 1f);
+        hexagonlist[triplehexagon_x2, triplehexagon_y2].name = hexagonlist[triplehexagon_x3, triplehexagon_y3].name;
 
-        myPrefabList[index_x3, index_y3].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x3, index_y3].transform.position, holdVector, 1f);
-        myPrefabList[index_x3, index_y3].name = holdName.name;
+        hexagonlist[triplehexagon_x3, triplehexagon_y3].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position, hold_Hex_Vector, 1f);
+        hexagonlist[triplehexagon_x3, triplehexagon_y3].name = holdName.name;
 
-        holdObj = myPrefabList[index_x2, index_y2];
+        holdObj = hexagonlist[triplehexagon_x2, triplehexagon_y2];
 
-        myPrefabList[index_x2, index_y2] = myPrefabList[index_x1, index_y1];
-        myPrefabList[index_x1, index_y1] = myPrefabList[index_x3, index_y3];
-        myPrefabList[index_x3, index_y3] = holdObj;
+        hexagonlist[triplehexagon_x2, triplehexagon_y2] = hexagonlist[triplehexagon_x1, triplehexagon_y1];
+        hexagonlist[triplehexagon_x1, triplehexagon_y1] = hexagonlist[triplehexagon_x3, triplehexagon_y3];
+        hexagonlist[triplehexagon_x3, triplehexagon_y3] = holdObj;
 
 
 
     }
     public void clockwiseRotation()
     {
-        holdName.name = myPrefabList[index_x1, index_y1].name;
+        holdName.name = hexagonlist[triplehexagon_x1, triplehexagon_y1].name;
 
-        holdVector = myPrefabList[index_x1, index_y1].transform.position;
+        hold_Hex_Vector = hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position;
 
-        myPrefabList[index_x1, index_y1].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x1, index_y1].transform.position, myPrefabList[index_x3, index_y3].transform.position, 1f);
-        myPrefabList[index_x1, index_y1].name = myPrefabList[index_x3, index_y3].name;
+        hexagonlist[triplehexagon_x1, triplehexagon_y1].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position, hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position, 1f);
+        hexagonlist[triplehexagon_x1, triplehexagon_y1].name = hexagonlist[triplehexagon_x3, triplehexagon_y3].name;
 
-        myPrefabList[index_x3, index_y3].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x3, index_y3].transform.position, myPrefabList[index_x2, index_y2].transform.position, 1f);
-        myPrefabList[index_x3, index_y3].name = myPrefabList[index_x2, index_y2].name;
-        myPrefabList[index_x2, index_y2].GetComponent<Transform>().position = Vector3.Lerp(myPrefabList[index_x2, index_y2].transform.position, holdVector, 1f);
+        hexagonlist[triplehexagon_x3, triplehexagon_y3].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position, hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position, 1f);
+        hexagonlist[triplehexagon_x3, triplehexagon_y3].name = hexagonlist[triplehexagon_x2, triplehexagon_y2].name;
+        hexagonlist[triplehexagon_x2, triplehexagon_y2].GetComponent<Transform>().position = Vector3.Lerp(hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position, hold_Hex_Vector, 1f);
 
-        myPrefabList[index_x2, index_y2].name = holdName.name;
+        hexagonlist[triplehexagon_x2, triplehexagon_y2].name = holdName.name;
 
-        holdObj = myPrefabList[index_x1, index_y1];
+        holdObj = hexagonlist[triplehexagon_x1, triplehexagon_y1];
 
-        myPrefabList[index_x1, index_y1] = myPrefabList[index_x2, index_y2];
-        myPrefabList[index_x2, index_y2] = myPrefabList[index_x3, index_y3];
-        myPrefabList[index_x3, index_y3] = holdObj;
+        hexagonlist[triplehexagon_x1, triplehexagon_y1] = hexagonlist[triplehexagon_x2, triplehexagon_y2];
+        hexagonlist[triplehexagon_x2, triplehexagon_y2] = hexagonlist[triplehexagon_x3, triplehexagon_y3];
+        hexagonlist[triplehexagon_x3, triplehexagon_y3] = holdObj;
 
     }
     void StartCutting()
     {
-        currentBladeTrail = Instantiate(bladeTrailPrefab, transform);
-        currentBladeTrail.GetComponent<Renderer>().enabled = false;
+        currenttouchsensor = Instantiate(touchsensor, transform);
+        currenttouchsensor.GetComponent<Renderer>().enabled = false;
         oldPosition = cam.ScreenToWorldPoint(Input.mousePosition);
     }
     void StopCutting()
@@ -423,7 +443,7 @@ public class Game : MonoBehaviour
         else
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            TrailRenderer tr = currentBladeTrail.GetComponent(typeof(TrailRenderer)) as TrailRenderer;
+            TrailRenderer tr = currenttouchsensor.GetComponent(typeof(TrailRenderer)) as TrailRenderer;
             tr.endWidth = 0;
             float min = 500;
             for (int i = 0; i < 16; i++)
@@ -432,8 +452,8 @@ public class Game : MonoBehaviour
                 {
                     float xx = cam.ScreenToWorldPoint(Input.mousePosition).x;
                     float yy = cam.ScreenToWorldPoint(Input.mousePosition).y;
-                    float aa = beyazList[i, j].transform.position.x;
-                    float bb = beyazList[i, j].transform.position.y;
+                    float aa = nodelist[i, j].transform.position.x;
+                    float bb = nodelist[i, j].transform.position.y;
                     float totalhipoxa = xx - aa;
                     totalhipoxa = totalhipoxa * totalhipoxa;
                     float totalhipoyb = yy - bb;
@@ -443,33 +463,33 @@ public class Game : MonoBehaviour
                     if (distancefar < min)
                     {
                         min = distancefar;
-                        var rig = beyazList[i, j].GetComponent<Rigidbody>();
+                        var rig = nodelist[i, j].GetComponent<Rigidbody>();
 
-                        stringname = beyazList[i, j].transform.name;
+                        stringname = nodelist[i, j].transform.name;
 
                         if (stringname.Length < 16)
                         {
                             chararr[0] = stringname[6];
                             chararr[1] = '0';
                             chararr[2] = stringname[7];
-                            intarr[0] = (int)char.GetNumericValue(chararr[0]);
-                            intarr[1] = (int)char.GetNumericValue(chararr[2]);
+                            nodeindex[0] = (int)char.GetNumericValue(chararr[0]);
+                            nodeindex[1] = (int)char.GetNumericValue(chararr[2]);
                         }
                         else
                         {
                             chararr[0] = stringname[6];
                             chararr[1] = stringname[7];
                             chararr[2] = stringname[8];
-                            intarr[0] = (int)char.GetNumericValue(chararr[0]) * 10 + (int)char.GetNumericValue(chararr[1]);
-                            intarr[1] = (int)char.GetNumericValue(chararr[2]);
+                            nodeindex[0] = (int)char.GetNumericValue(chararr[0]) * 10 + (int)char.GetNumericValue(chararr[1]);
+                            nodeindex[1] = (int)char.GetNumericValue(chararr[2]);
                         }
                         sendarr();
                     }
-                    currentBladeTrail.transform.SetParent(null);
+                    currenttouchsensor.transform.SetParent(null);
                 }
             }
-            currentBladeTrail.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
-            Destroy(currentBladeTrail, 2f);
+            currenttouchsensor.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
+            Destroy(currenttouchsensor, 2f);
         }
     }
     void CircleCreate()
@@ -481,15 +501,15 @@ public class Game : MonoBehaviour
                 sendindex_i = i;
                 sendindex_j = j;
                 nearestObject(sendindex_i, sendindex_j);
-                beyaz.name = "circle" + i + j;
-                mysecondVector = new Vector3((myPrefabList[index_x1, index_y1].transform.position.x + myPrefabList[index_x2, index_y2].transform.position.x + myPrefabList[index_x3, index_y3].transform.position.x) / 3, (myPrefabList[index_x1, index_y1].transform.position.y +myPrefabList[index_x2, index_y2].transform.position.y +myPrefabList[index_x3, index_y3].transform.position.y) / 3, -1);
-                beyazList[i, j] = Instantiate(beyaz, mysecondVector, Quaternion.identity, GameObject.FindGameObjectWithTag("CircleMap").transform);
+                nodes.name = "circle" + i + j;
+                Circle_Vector = new Vector3((hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position.x + hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position.x + hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position.x) / 3, (hexagonlist[triplehexagon_x1, triplehexagon_y1].transform.position.y +hexagonlist[triplehexagon_x2, triplehexagon_y2].transform.position.y +hexagonlist[triplehexagon_x3, triplehexagon_y3].transform.position.y) / 3, -1);
+                nodelist[i, j] = Instantiate(nodes, Circle_Vector, Quaternion.identity, GameObject.FindGameObjectWithTag("CircleMap").transform);
             }
         }
     }
     static public int[] sendarr()
     {
-        return intarr;
+        return nodeindex;
     }
     IEnumerator WaitForLevelSwitch()
     {
@@ -498,13 +518,13 @@ public class Game : MonoBehaviour
         int ata;
         for (int i = 0; i < counter; i++)
         {
-            ata = indexx[i];
-            atb = indexy[i];
+            ata = closesthexagonindex_i[i];
+            atb = closesthexagonindex_y[i];
             if (ata != -1)
             {
-                Point++;
-                myPrefabList[ata, atb].GetComponent<SpriteRenderer>().enabled = false;
-                mr = myPrefabList[ata, atb].GetComponent<SpriteRenderer>();
+                currentPoint++;
+                hexagonlist[ata, atb].GetComponent<SpriteRenderer>().enabled = false;
+                spriteRenderer = hexagonlist[ata, atb].GetComponent<SpriteRenderer>();
                 
                 chooseColor();
             }
@@ -512,12 +532,12 @@ public class Game : MonoBehaviour
         }
                 PointScreen();
                 updateHexagon();
-        t = 0;
-        tu = 0;
+        updatehexagon = 0;
+        checkhexagon = 0;
     }
     void PointScreen()
     {
-        point = "" + Point;
-        GameObject.Find("Point").GetComponent<TextMesh>().text = point;
+        text_point = "" + currentPoint;
+        GameObject.Find("Point").GetComponent<TextMesh>().text = text_point;
     }
 }

@@ -13,6 +13,8 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.IK.IKEditorManagerHelper
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
+    - UnityEditor.Tilemaps.GridPaletteBrushes
+    - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
@@ -736,7 +738,7 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerBitField
   - hash:
       serializedVersion: 2
-      Hash: 74d950a9b0cd96b60553ba5f4d77a319
+      Hash: ceaa14ebcc8eaedd934766addf6df2bc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game
@@ -1124,4 +1126,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/Game.unity
   - Assets/Scenes/About.unity
   - Assets/Scenes/HowtoPlay.unity
-  playerPath: C:/Users/Emre/Desktop/Unity/WordPuzzellv2/deneme.apk
+  playerPath: C:/Users/Emre/Desktop/Unity/WordPuzzellv2/test.apk

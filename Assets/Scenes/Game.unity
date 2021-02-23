@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5b871a4b256f6499c93866da2987e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beyaz: {fileID: 5743813529505772077, guid: fac7b54f4a34a024faa433c049626300, type: 3}
-  myPrefab: {fileID: 9179419420861681333, guid: 45d0fbf33d19403469689c8dcb8ba202, type: 3}
-  bladeTrailPrefab: {fileID: 242345329464095198, guid: 681a8b0cff0b2d148a716b1313c1f55d, type: 3}
+  hexagons: {fileID: 9179419420861681333, guid: 45d0fbf33d19403469689c8dcb8ba202, type: 3}
+  nodes: {fileID: 5743813529505772077, guid: fac7b54f4a34a024faa433c049626300, type: 3}
+  touchsensor: {fileID: 242345329464095198, guid: 681a8b0cff0b2d148a716b1313c1f55d, type: 3}
   Point: 0
 --- !u!4 &529346914
 Transform:

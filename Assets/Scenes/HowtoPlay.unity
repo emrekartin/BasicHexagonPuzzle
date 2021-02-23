@@ -180,12 +180,24 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "D\xF6nd\xFCrmek istenilen \xFC\xE7l\xFC se\xE7ilir. Saat y\xF6n\xFCnde
-    \xE7evirmek i\xE7in sa\u011F kayd\u0131rma harekti yap\u0131l\u0131r. Saat y\xF6n\xFCn\xFCn
-    tersine \xE7evirmek i\xE7in sola kayd\u0131rma hareketi yap\u0131l\u0131r. E\u011Fer
-    \xFC\xE7l\xFC blok tespit edilirse bunlar yok olur. Ve bu blokun \xFCst\xFCndeki
-    hexagonlar a\u015Fa\u011F\u0131 d\xFC\u015Fer. en \xFCste yeni hexagonlar gelir.
-    Yok edilen her hexagon i\xE7in 1 puan gelir."
+  m_text: '-The node closest to the middle of the three hexagons to be rotated is
+    selected.
+
+    -Right shift is used to rotate the selected triple hexagon clockwise.
+
+    -It
+    is also turned counterclockwise with a left shift.
+
+    -If three blocks of
+    the same color are detected, they will be destroyed.
+
+    -And the hexagons
+    on top of those destroyed fall down.
+
+    -New hexagons are created on the upper
+    part to be emptied.
+
+    -One point is earned for each hexagon destroyed.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -212,8 +224,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.98
-  m_fontSizeBase: 56.98
+  m_fontSize: 54.91
+  m_fontSizeBase: 54.91
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
