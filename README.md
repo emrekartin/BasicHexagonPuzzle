@@ -1,4 +1,4 @@
-# basichexagonpuzzle 
+# basic hexagon puzzle 
 
 basic hexagon puzzle game
 
