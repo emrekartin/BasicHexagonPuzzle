@@ -28,10 +28,9 @@ public class Game : MonoBehaviour
     private GameObject holdName;
     private GameObject holdObj;
     private Random choosencolor = new Random();
+
     static int[] nodeindex = new int[2];
     
-
-
     private int[] closesthexagonindex_i = new int[20];
     private int[] closesthexagonindex_y = new int[20];
 
@@ -155,7 +154,7 @@ public class Game : MonoBehaviour
         }
         checkHexagon();
     }
-    public void counterclockwiseRotationButton()
+    void counterclockwiseRotationButton()
     {
         nodeindex = sendarr();
         sendindex_i = nodeindex[0];
@@ -171,7 +170,7 @@ public class Game : MonoBehaviour
             counterclockwiseRotation();
         }
     }
-    public void clockwiseRotationButton()
+    void clockwiseRotationButton()
     {
 
         nodeindex = sendarr();
@@ -376,7 +375,7 @@ public class Game : MonoBehaviour
             }
         }
     }
-    public void counterclockwiseRotation()
+    void counterclockwiseRotation()
     {
 
         holdName.name = hexagonlist[triplehexagon_x1, triplehexagon_y1].name;
@@ -400,7 +399,7 @@ public class Game : MonoBehaviour
 
 
     }
-    public void clockwiseRotation()
+    void clockwiseRotation()
     {
         holdName.name = hexagonlist[triplehexagon_x1, triplehexagon_y1].name;
 
@@ -507,7 +506,7 @@ public class Game : MonoBehaviour
             }
         }
     }
-    static public int[] sendarr()
+    static int[] sendarr()
     {
         return nodeindex;
     }
